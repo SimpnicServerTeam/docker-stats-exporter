@@ -23,12 +23,12 @@ Options:
 
 # Build requirements
 
-Rust 1.87
+Rust 1.88
 
 # Cross Compile
 
 1. build the builder (do once)
-   `docker build -t cts/rust-aarch64-linux-gnu:1.87 -f Dockerfile.toolchain .`
+   `docker build -t cts/rust-aarch64-linux-gnu:1.88 -f Dockerfile.toolchain .`
 2. build app
    `docker build --platform linux/arm64 -t cts/docker-stat-exporter:latest .`
 3. create image backup
