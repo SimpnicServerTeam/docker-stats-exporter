@@ -30,14 +30,14 @@ Rust 1.87
 1. build the builder (do once)
    `docker build -t cts/rust-aarch64-linux-gnu:1.87 -f Dockerfile.toolchain .`
 2. build app
-   `docker build --platform linux/arm64 -t cts/docker-stat-prom:latest .`
+   `docker build --platform linux/arm64 -t cts/docker-stat-exporter:latest .`
 3. create image backup
-   `docker save cts/docker-stat-prom:latest | xz -vvv -T 7 > docker-stat-prom-latest.tar.xz`
+   `docker save cts/docker-stat-exporter:latest | xz -vvv -T 7 > docker-stat-exporter-latest.tar.xz`
 
 # using docker image backup file
 
-1. `docker load < docker-stat-prom-latest.tar.xz`
-2. `docker run -d --name docker-stat-prom -p 12096:12096 -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped --log-driver local cts/docker-stat-prom:latest`
+1. `docker load < docker-stat-exporter-latest.tar.xz`
+2. `docker run -d --name docker-stat-exporter -p 12096:12096 -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped --log-driver local cts/docker-stat-exporter:latest`
 
 # Prometheus registry metrics
 
