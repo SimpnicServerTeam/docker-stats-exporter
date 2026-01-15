@@ -5,11 +5,9 @@ pub mod usecases;
 use std::{fs::File, io::BufReader, sync::Arc};
 // use rayon::prelude::*;
 use actix_web::{
-    App, HttpServer,
-    web::{self},
+    App, HttpServer, middleware, web::{self}
 };
 use clap::Parser;
-use prometheus_client::metrics::gauge::Gauge;
 use tracing::level_filters::LevelFilter;
 use tracing_actix_web::TracingLogger;
 use tracing_subscriber::{Layer, layer::SubscriberExt};
@@ -48,22 +46,6 @@ struct CliArgs {
     polling_millis: u64,
 }
 
-#[test]
-pub fn test_clone_gauge() {
-    let gauge: Gauge<i64> = Gauge::default();
-    gauge.set(1);
-
-    let cloned_gauge = gauge.clone();
-    cloned_gauge.set(5);
-
-    println!(
-        "gauge: {}, cloned_gauge: {}",
-        gauge.get(),
-        cloned_gauge.get()
-    );
-    assert!(true);
-}
-
 #[tokio::main]
 async fn main() {
     let stdout_log = tracing_subscriber::fmt::layer().with_filter(LevelFilter::DEBUG);
@@ -89,6 +71,7 @@ async fn main() {
                 worker: worker_4_server.clone(),
             }))
             .wrap(TracingLogger::default())
+            .wrap(middleware::Compress::default())
             .service(http_handlers::get_scopes(""))
     })
     .workers(4);
