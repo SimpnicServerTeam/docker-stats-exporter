@@ -1,11 +1,15 @@
-# Build requirements
+# docker-stats-exporter
 
-Rust 1.87
+this exporter will polling docker host, collect stats of its containers.
+
+# host system requirements
+
+cgroup v2
 
 # Usage
 
 ```
-Usage: docker-stat-prom [OPTIONS]
+Usage: docker-stat-exporter [OPTIONS]
 
 Options:
   -H, --host <HOST>                        docker host [default: unix:///var/run/docker.sock]
@@ -17,9 +21,9 @@ Options:
   -h, --help                               Print help (see more with '--help')
 ```
 
-# host system requirements
+# Build requirements
 
-cgroup v2
+Rust 1.87
 
 # Cross Compile
 
@@ -32,8 +36,8 @@ cgroup v2
 
 # using docker image backup file
 
-1. `sudo docker load < docker-stat-prom-latest.tar.xz`
-2. `sudo docker run -d --name docker-stat-prom -p 12096:12096 -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped --log-driver local cts/docker-stat-prom:latest`
+1. `docker load < docker-stat-prom-latest.tar.xz`
+2. `docker run -d --name docker-stat-prom -p 12096:12096 -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped --log-driver local cts/docker-stat-prom:latest`
 
 # Prometheus registry metrics
 
@@ -62,5 +66,5 @@ Since internal polling period will never matches prometheus polling period, peri
 
 # todo
 
-- push metrics
-- read cgroup v2 directly, to support such as swap usage
+- ability of push metrics to Push Gateway
+- read cgroup v2 directly, to support some metrics that `docker stats` does not shows, such as swap usage

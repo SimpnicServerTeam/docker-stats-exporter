@@ -19,5 +19,5 @@ RUN cargo build --release --target aarch64-unknown-linux-gnu
 
 # extract binary
 FROM debian:trixie-slim
-COPY --from=appbuild /usr/app/target/aarch64-unknown-linux-gnu/release/docker-stat-prom /usr/local/sbin/docker-stat-prom
-CMD ["docker-stat-prom"]
+COPY --from=appbuild /usr/app/target/aarch64-unknown-linux-gnu/release/docker-stat-exporter /usr/local/sbin/docker-stat-exporter
+CMD ["docker-stat-exporter"]

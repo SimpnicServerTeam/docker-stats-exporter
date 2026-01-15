@@ -1,5 +1,5 @@
 [package]
-name = "docker-stat-prom"
+name = "docker-stat-exporter"
 version = "0.1.0"
 edition = "2024"
 
