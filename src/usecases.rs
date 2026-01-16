@@ -74,7 +74,7 @@ fn get_cpu_usage(first: &ContainerCpuStats, second: &ContainerCpuStats, time_del
         if let (Some(first_total_usage), Some(second_total_usage)) =
             (first.total_usage, second.total_usage)
         {
-            second_total_usage - first_total_usage
+            second_total_usage.saturating_sub(first_total_usage)
         } else {
             0
         }
@@ -414,8 +414,8 @@ impl DockerStatPollingWorker {
                                 (0, 0)
                             };
                         let (net_in_bps, net_out_bps) = (
-                            (stat.net_in - first_net_in) as f64 * time_delta,
-                            (stat.net_out - first_net_out) as f64 * time_delta,
+                            (stat.net_in.saturating_sub(first_net_in)) as f64 * time_delta,
+                            (stat.net_out.saturating_sub(first_net_out)) as f64 * time_delta,
                         );
                         stat.net_in_bps = net_in_bps * 8.;
                         stat.net_out_bps = net_out_bps * 8.;
@@ -428,8 +428,8 @@ impl DockerStatPollingWorker {
                                 (0, 0)
                             };
                         let (blk_in_byteps, blk_out_byteps) = (
-                            (stat.blk_in - first_blk_in) as f64 * time_delta,
-                            (stat.blk_out - first_blk_out) as f64 * time_delta,
+                            (stat.blk_in.saturating_sub(first_blk_in)) as f64 * time_delta,
+                            (stat.blk_out.saturating_sub(first_blk_out)) as f64 * time_delta,
                         );
                         stat.blk_in_byteps = blk_in_byteps;
                         stat.blk_out_byteps = blk_out_byteps;
