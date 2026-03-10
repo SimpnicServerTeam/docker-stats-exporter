@@ -5,7 +5,8 @@ pub mod usecases;
 use std::{fs::File, io::BufReader, sync::Arc};
 // use rayon::prelude::*;
 use actix_web::{
-    App, HttpServer, middleware, web::{self}
+    App, HttpServer, middleware,
+    web::{self},
 };
 use clap::Parser;
 use tracing::level_filters::LevelFilter;
